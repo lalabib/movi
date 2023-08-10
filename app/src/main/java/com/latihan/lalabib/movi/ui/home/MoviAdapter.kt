@@ -12,7 +12,7 @@ import com.latihan.lalabib.movi.data.local.MoviesEntity
 import com.latihan.lalabib.movi.databinding.ItemMovieBinding
 import com.latihan.lalabib.movi.utils.SharedObject.IMG_URL
 
-class MoviAdapter : ListAdapter<MoviesEntity, MoviAdapter.MoviViewHolder>(DIFFUTIL) {
+class MoviAdapter(private val onItemClick: (MoviesEntity) -> Unit) : ListAdapter<MoviesEntity, MoviAdapter.MoviViewHolder>(DIFFUTIL) {
 
     private object DIFFUTIL : DiffUtil.ItemCallback<MoviesEntity>() {
         override fun areItemsTheSame(oldItem: MoviesEntity, newItem: MoviesEntity): Boolean {
@@ -25,19 +25,19 @@ class MoviAdapter : ListAdapter<MoviesEntity, MoviAdapter.MoviViewHolder>(DIFFUT
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviViewHolder {
-        return MoviViewHolder(
-            ItemMovieBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+        val binding =  ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MoviViewHolder(binding, onItemClick)
+
     }
 
     override fun onBindViewHolder(holder: MoviViewHolder, position: Int) {
         val movie = getItem(position)
-        holder.bind(movie)
+        if (movie != null) {
+            holder.bind(movie)
+        }
     }
 
-    class MoviViewHolder(private val binding: ItemMovieBinding) :
+    class MoviViewHolder(private val binding: ItemMovieBinding, val onItemClick: (MoviesEntity) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MoviesEntity) {
             binding.apply {
@@ -48,6 +48,7 @@ class MoviAdapter : ListAdapter<MoviesEntity, MoviAdapter.MoviViewHolder>(DIFFUT
                         .error(R.drawable.ic_broken_img))
                     .into(ivPoster)
             }
+            itemView.setOnClickListener { onItemClick(movie) }
         }
     }
 }
