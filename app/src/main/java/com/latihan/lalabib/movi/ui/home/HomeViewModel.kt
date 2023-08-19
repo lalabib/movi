@@ -2,15 +2,12 @@ package com.latihan.lalabib.movi.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.latihan.lalabib.movi.BuildConfig
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.latihan.lalabib.movi.data.MoviRepository
-import com.latihan.lalabib.movi.data.remote.response.MoviesResponse
+import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
+class HomeViewModel(repository: MoviRepository): ViewModel() {
 
-class HomeViewModel(private val repository: MoviRepository): ViewModel() {
-
-    fun getMovies() : LiveData<MoviesResponse> = repository.getMovie(apiKey)
-
-    companion object {
-        private const val apiKey = BuildConfig.apiKey
-    }
+    val movie: LiveData<PagingData<MoviesEntity>> = repository.getAllMovie().cachedIn(viewModelScope)
 }

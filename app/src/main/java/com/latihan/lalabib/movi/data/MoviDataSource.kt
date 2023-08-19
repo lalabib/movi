@@ -7,7 +7,5 @@ import com.latihan.lalabib.movi.utils.Resource
 
 interface MoviDataSource {
 
-    fun getMovie(apiKey: String) : LiveData<MoviesResponse>
-
     fun getDetailMovie(id: String): LiveData<DetailMovieResponse>
 }

@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.latihan.lalabib.movi.R
+import com.latihan.lalabib.movi.adapter.LoadingStateAdapter
+import com.latihan.lalabib.movi.adapter.MoviAdapter
 import com.latihan.lalabib.movi.databinding.ActivityHomeBinding
 import com.latihan.lalabib.movi.ui.detail.DetailActivity
 import com.latihan.lalabib.movi.utils.ViewModelFactory
@@ -30,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         homeViewModel = ViewModelProvider(this@HomeActivity, factory)[HomeViewModel::class.java]
     }
 
@@ -42,13 +44,17 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        homeViewModel.getMovies().observe(this) {
-            movieAdapter.submitList(it.results)
+        homeViewModel.movie.observe(this@HomeActivity) {
+            movieAdapter.submitData(lifecycle, it)
         }
 
         binding.apply {
             rvMovies.layoutManager = GridLayoutManager(this@HomeActivity, 2)
-            rvMovies.adapter = movieAdapter
+            rvMovies.adapter = movieAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    movieAdapter.retry()
+                }
+            )
         }
     }
 }

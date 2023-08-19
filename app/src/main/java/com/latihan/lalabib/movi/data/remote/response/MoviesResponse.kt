@@ -1,7 +1,7 @@
 package com.latihan.lalabib.movi.data.remote.response
 
 import com.google.gson.annotations.SerializedName
-import com.latihan.lalabib.movi.data.local.MoviesEntity
+import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 
 data class MoviesResponse(
     @SerializedName("results")

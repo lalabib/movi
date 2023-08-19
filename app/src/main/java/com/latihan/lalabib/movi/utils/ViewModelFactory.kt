@@ -1,5 +1,6 @@
 package com.latihan.lalabib.movi.utils
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.latihan.lalabib.movi.data.MoviRepository
@@ -27,9 +28,9 @@ class ViewModelFactory(private val moviRepository: MoviRepository) :
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(): ViewModelFactory =
+        fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository())
+                instance ?: ViewModelFactory(Injection.provideRepository(context))
             }
     }
 }

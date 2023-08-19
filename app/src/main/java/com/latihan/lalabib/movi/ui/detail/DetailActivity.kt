@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
     }
 
