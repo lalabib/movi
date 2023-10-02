@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.latihan.lalabib.movi.data.MoviRepository
-import com.latihan.lalabib.movi.data.remote.response.DetailMovieResponse
+import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
+import com.latihan.lalabib.movi.utils.Resource
 
 class DetailViewModel(private val repository: MoviRepository): ViewModel() {
 
@@ -15,7 +16,7 @@ class DetailViewModel(private val repository: MoviRepository): ViewModel() {
         movieId.value = id
     }
 
-    var detailMovie: LiveData<DetailMovieResponse> =
+    var detailMovie: LiveData<Resource<MoviesEntity>> =
         Transformations.switchMap(movieId) { movieId ->
             repository.getDetailMovie(movieId)
         }
