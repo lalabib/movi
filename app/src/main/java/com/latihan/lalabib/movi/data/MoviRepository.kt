@@ -1,19 +1,12 @@
 package com.latihan.lalabib.movi.data
 
 import androidx.lifecycle.LiveData
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.latihan.lalabib.movi.data.local.LocalDataSource
 import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-import com.latihan.lalabib.movi.data.local.room.MoviDatabase
 import com.latihan.lalabib.movi.data.remote.ApiResponse
-import com.latihan.lalabib.movi.data.remote.MoviRemoteMediator
 import com.latihan.lalabib.movi.data.remote.RemoteDataSource
 import com.latihan.lalabib.movi.data.remote.response.DetailMovieResponse
-import com.latihan.lalabib.movi.networking.ApiService
+import com.latihan.lalabib.movi.data.remote.response.MoviesResponse
 import com.latihan.lalabib.movi.utils.AppExecutors
 import com.latihan.lalabib.movi.utils.Resource
 
@@ -21,19 +14,20 @@ class MoviRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors,
-    private val database: MoviDatabase,
-    private val apiService: ApiService
 ) : MoviDataSource {
 
-    fun getAllMovie(): LiveData<PagingData<MoviesEntity>> {
-        @OptIn(ExperimentalPagingApi::class)
-        return Pager(
-            config = PagingConfig(pageSize = 8),
-            remoteMediator = MoviRemoteMediator(database, apiService),
-            pagingSourceFactory = {
-                database.movieDao().getAllMovie()
-            }
-        ).liveData
+    override fun getMovie(): LiveData<Resource<List<MoviesEntity>>> {
+        return object : NetworkBoundResource<List<MoviesEntity>, MoviesResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<MoviesEntity>> = localDataSource.getAllMovie()
+
+            override fun shouldFetch(data: List<MoviesEntity>?): Boolean = data.isNullOrEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<MoviesResponse>> =
+                remoteDataSource.getMovie()
+
+            override fun saveCallResult(data: MoviesResponse) =
+                localDataSource.insertMovie(data.results)
+        }.asLiveData()
     }
 
     override fun getDetailMovie(id: String): LiveData<Resource<MoviesEntity>> {
@@ -59,6 +53,14 @@ class MoviRepository(
         }.asLiveData()
     }
 
+    override fun setFavoriteMovie(movie: MoviesEntity, isFavorite: Boolean) {
+        appExecutors.diskIO().execute {
+            localDataSource.setMovieStatus(movie, isFavorite)
+        }
+    }
+
+    override fun getFavMovie(): LiveData<List<MoviesEntity>> = localDataSource.getFavMovie()
+
     companion object {
         @Volatile
         private var instance: MoviRepository? = null
@@ -67,15 +69,11 @@ class MoviRepository(
             remoteDataSource: RemoteDataSource,
             localDataSource: LocalDataSource,
             appExecutors: AppExecutors,
-            database: MoviDatabase,
-            apiService: ApiService
         ): MoviRepository = instance ?: synchronized(this) {
             instance ?: MoviRepository(
                 remoteDataSource,
                 localDataSource,
                 appExecutors,
-                database,
-                apiService
             )
         }
     }

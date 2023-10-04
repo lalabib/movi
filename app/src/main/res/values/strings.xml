@@ -2,6 +2,7 @@
     <string name="app_name">Movi</string>
     <string name="home_title">Movie</string>
     <string name="detail_title">Detail</string>
+    <string name="favorite_title">Favorite</string>
     <string name="title">Title</string>
     <string name="poster">Poster of Movie</string>
     <string name="image">Image View</string>

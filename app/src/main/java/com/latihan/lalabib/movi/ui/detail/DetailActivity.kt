@@ -48,25 +48,29 @@ class DetailActivity : AppCompatActivity() {
             if (id != null) {
                 detailViewModel.setMoviesData(id)
                 detailViewModel.detailMovie.observe(this) { detailMovie ->
-                    when (detailMovie.status) {
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-
-                        Status.SUCCESS -> {
-                            if (detailMovie != null) {
-                                detailMovie.data?.let { populatedDetailMovie(it) }
-                                showLoading(false)
+                    if (detailMovie != null) {
+                        when (detailMovie.status) {
+                            Status.LOADING -> {
+                                showLoading(true)
                             }
-                        }
 
-                        Status.ERROR -> {
-                            showLoading(false)
-                            Toast.makeText(
-                                this@DetailActivity,
-                                getString(R.string.error_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Status.SUCCESS -> {
+                                showLoading(false)
+                                detailMovie.data?.let { populatedDetailMovie(it) }
+
+                                binding.icFavorite.setOnClickListener {
+                                    detailViewModel.setFavoriteMovie()
+                                }
+                            }
+
+                            Status.ERROR -> {
+                                showLoading(false)
+                                Toast.makeText(
+                                    this@DetailActivity,
+                                    getString(R.string.error_message),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 }
@@ -77,18 +81,24 @@ class DetailActivity : AppCompatActivity() {
     private fun populatedDetailMovie(movie: MoviesEntity) {
         binding.apply {
             tvTitle.text = movie.title
-            tvVoteAverage.text = movie.vote_average
-            tvReleaseDate.text = movie.release_date
+            tvVoteAverage.text = movie.voteAverage
+            tvReleaseDate.text = movie.releaseDate
             tvOverview.text = movie.overview
 
             Glide.with(this@DetailActivity)
-                .load(IMG_URL + movie.poster_path)
+                .load(IMG_URL + movie.posterPath)
                 .apply(
                     RequestOptions.placeholderOf(R.drawable.ic_loading)
                         .error(R.drawable.ic_broken_img)
                 )
                 .into(ivPosterImage)
+
+            setFavorite(movie.isFavorite)
         }
+    }
+
+    private fun setFavorite(state: Boolean) {
+        binding.icFavorite.isChecked = state
     }
 
     private fun showLoading(isLoading: Boolean) {

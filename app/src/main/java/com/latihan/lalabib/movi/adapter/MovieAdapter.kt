@@ -2,8 +2,8 @@ package com.latihan.lalabib.movi.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -12,8 +12,8 @@ import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 import com.latihan.lalabib.movi.databinding.ItemMovieBinding
 import com.latihan.lalabib.movi.utils.SharedObject.IMG_URL
 
-class MoviAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
-    PagingDataAdapter<MoviesEntity, MoviAdapter.MoviViewHolder>(DIFFUTIL) {
+class MovieAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
+    ListAdapter<MoviesEntity, MovieAdapter.MoviViewHolder>(DIFFUTIL) {
 
     private object DIFFUTIL : DiffUtil.ItemCallback<MoviesEntity>() {
         override fun areItemsTheSame(oldItem: MoviesEntity, newItem: MoviesEntity): Boolean {
@@ -47,9 +47,11 @@ class MoviAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
             binding.apply {
                 tvTitle.text = movie.title
                 Glide.with(itemView.context)
-                    .load(IMG_URL + movie.poster_path)
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_loading)
-                            .error(R.drawable.ic_broken_img))
+                    .load(IMG_URL + movie.posterPath)
+                    .apply(
+                        RequestOptions.placeholderOf(R.drawable.ic_loading)
+                            .error(R.drawable.ic_broken_img)
+                    )
                     .into(ivPoster)
             }
             itemView.setOnClickListener { onItemClick(movie) }

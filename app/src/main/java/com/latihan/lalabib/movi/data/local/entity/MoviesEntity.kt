@@ -3,6 +3,7 @@ package com.latihan.lalabib.movi.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "movie_entities")
 data class MoviesEntity(
@@ -14,12 +15,17 @@ data class MoviesEntity(
 
     val overview: String,
 
+    @SerializedName("release_date")
     @ColumnInfo(name = "release_date")
-    val release_date: String,
+    val releaseDate: String,
 
+    @SerializedName("vote_average")
     @ColumnInfo(name = "vote_average")
-    val vote_average: String,
+    val voteAverage: String,
 
+    @SerializedName("poster_path")
     @ColumnInfo(name = "poster_path")
-    val poster_path: String,
+    val posterPath: String,
+
+    var isFavorite: Boolean = false
 )

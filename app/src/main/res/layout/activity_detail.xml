@@ -58,20 +58,31 @@
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
+        <CheckBox
+            android:id="@+id/ic_favorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_favorite"
+            app:useMaterialThemeColors="false"
+            app:layout_constraintEnd_toEndOf="@id/card_view"
+            app:layout_constraintTop_toBottomOf="@id/card_view"
+            app:layout_constraintTop_toTopOf="@id/tv_release_date_title" />
+
         <TextView
             android:id="@+id/tv_release_date_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/release_date_title"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ic_favorite"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <TextView
             android:id="@+id/tv_release_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text="@string/release_date"
@@ -80,7 +91,7 @@
 
         <TextView
             android:id="@+id/tv_overview_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/overview_title"
@@ -96,8 +107,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="20dp"
             android:text="@string/overview"
-            app:layout_constraintEnd_toEndOf="@+id/card_view"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/card_view"
             app:layout_constraintStart_toStartOf="@+id/tv_overview_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_overview_title" />
 

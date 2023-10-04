@@ -6,11 +6,33 @@ import androidx.lifecycle.MutableLiveData
 import com.latihan.lalabib.movi.data.remote.response.DetailMovieResponse
 import com.latihan.lalabib.movi.networking.ApiConfig
 import com.latihan.lalabib.movi.BuildConfig.apiKey
+import com.latihan.lalabib.movi.data.remote.response.MoviesResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RemoteDataSource {
+
+    fun getMovie(): LiveData<ApiResponse<MoviesResponse>> {
+        val resultMovie = MutableLiveData<ApiResponse<MoviesResponse>>()
+        ApiConfig.getApiService().getMovie(apiKey).enqueue(object : Callback<MoviesResponse> {
+            override fun onResponse(
+                call: Call<MoviesResponse>,
+                response: Response<MoviesResponse>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let { resultMovie.value = ApiResponse.success(it) }
+                } else {
+                    Log.e(TAG, "onResponseFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+        })
+        return resultMovie
+    }
 
     fun getDetailMovie(id: String): LiveData<ApiResponse<DetailMovieResponse>> {
         val resultDetailMovie = MutableLiveData<ApiResponse<DetailMovieResponse>>()

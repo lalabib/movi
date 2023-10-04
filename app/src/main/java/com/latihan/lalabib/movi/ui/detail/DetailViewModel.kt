@@ -20,4 +20,14 @@ class DetailViewModel(private val repository: MoviRepository): ViewModel() {
         Transformations.switchMap(movieId) { movieId ->
             repository.getDetailMovie(movieId)
         }
+
+    fun setFavoriteMovie() {
+        val movieSource = detailMovie.value
+        if (movieSource != null) {
+            val movie = movieSource.data
+            val newState = !movie?.isFavorite!!
+
+            repository.setFavoriteMovie(movie, newState)
+        }
+    }
 }
