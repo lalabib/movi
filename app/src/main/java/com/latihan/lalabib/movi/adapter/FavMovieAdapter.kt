@@ -12,7 +12,7 @@ import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 import com.latihan.lalabib.movi.databinding.ItemFavMovieBinding
 import com.latihan.lalabib.movi.utils.SharedObject.IMG_URL
 
-class FavMovieAdapter :
+class FavMovieAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
     ListAdapter<MoviesEntity, FavMovieAdapter.FavMovieViewHolder>(DIFFUTIL) {
 
     object DIFFUTIL : DiffUtil.ItemCallback<MoviesEntity>() {
@@ -26,8 +26,9 @@ class FavMovieAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavMovieViewHolder {
-        val binding = ItemFavMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FavMovieViewHolder(binding)
+        val binding =
+            ItemFavMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FavMovieViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: FavMovieViewHolder, position: Int) {
@@ -37,7 +38,10 @@ class FavMovieAdapter :
         }
     }
 
-    class FavMovieViewHolder(private val binding: ItemFavMovieBinding) :
+    class FavMovieViewHolder(
+        private val binding: ItemFavMovieBinding,
+        val onItemClick: (MoviesEntity) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(favMovie: MoviesEntity) {
             binding.apply {
@@ -51,6 +55,7 @@ class FavMovieAdapter :
                     )
                     .into(ivPoster)
             }
+            itemView.setOnClickListener { onItemClick(favMovie) }
         }
     }
 }

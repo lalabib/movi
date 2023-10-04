@@ -1,5 +1,6 @@
 package com.latihan.lalabib.movi.ui.favorite
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.adapter.FavMovieAdapter
 import com.latihan.lalabib.movi.databinding.ActivityFavoriteBinding
+import com.latihan.lalabib.movi.ui.detail.DetailActivity
 import com.latihan.lalabib.movi.utils.ViewModelFactory
 
 class FavoriteActivity : AppCompatActivity() {
@@ -37,7 +39,13 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        val favMovieAdapter = FavMovieAdapter()
+        val favMovieAdapter = FavMovieAdapter { favMovie ->
+            Intent(this@FavoriteActivity, DetailActivity::class.java).apply {
+                putExtra(DetailActivity.EXTRA_DATA, favMovie.id)
+                startActivity(this)
+            }
+
+        }
 
         favViewModel.favoriteMovie.observe(this@FavoriteActivity) {
             favMovieAdapter.submitList(it)
