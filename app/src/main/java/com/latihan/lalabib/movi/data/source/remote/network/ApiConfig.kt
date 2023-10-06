@@ -1,4 +1,4 @@
-package com.latihan.lalabib.movi.networking
+package com.latihan.lalabib.movi.data.source.remote.network
 
 import com.latihan.lalabib.movi.utils.SharedObject.BASE_URL
 import retrofit2.Retrofit

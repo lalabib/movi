@@ -1,4 +1,4 @@
-package com.latihan.lalabib.movi.data.remote.response
+package com.latihan.lalabib.movi.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 

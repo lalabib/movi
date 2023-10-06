@@ -1,4 +1,4 @@
-package com.latihan.lalabib.movi.data.local.entity
+package com.latihan.lalabib.movi.data.source.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,7 +1,7 @@
 package com.latihan.lalabib.movi.utils
 
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-import com.latihan.lalabib.movi.data.remote.response.DetailMovieResponse
+import com.latihan.lalabib.movi.data.source.local.entity.MoviesEntity
+import com.latihan.lalabib.movi.data.source.remote.response.DetailMovieResponse
 import com.latihan.lalabib.movi.domain.model.Movies
 
 object DataMapper {

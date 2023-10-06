@@ -1,15 +1,15 @@
 package com.latihan.lalabib.movi.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import com.latihan.lalabib.movi.data.local.LocalDataSource
-import com.latihan.lalabib.movi.data.remote.network.ApiResponse
-import com.latihan.lalabib.movi.data.remote.RemoteDataSource
-import com.latihan.lalabib.movi.data.remote.response.MoviesResponse
+import com.latihan.lalabib.movi.data.source.local.LocalDataSource
+import com.latihan.lalabib.movi.data.source.remote.response.DetailMovieResponse
+import com.latihan.lalabib.movi.data.source.remote.network.ApiResponse
+import com.latihan.lalabib.movi.data.source.remote.RemoteDataSource
 import com.latihan.lalabib.movi.domain.model.Movies
 import com.latihan.lalabib.movi.domain.repository.IMoviesRepository
 import com.latihan.lalabib.movi.utils.AppExecutors
 import com.latihan.lalabib.movi.utils.DataMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class MoviRepository(
     private val remoteDataSource: RemoteDataSource,
@@ -17,29 +17,25 @@ class MoviRepository(
     private val appExecutors: AppExecutors,
 ): IMoviesRepository {
 
-    override fun getMovie(): LiveData<Resource<List<Movies>>> =
-        object : NetworkBoundResource<List<Movies>, MoviesResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<Movies>> {
-                return Transformations.map(localDataSource.getAllMovie()) {
-                    DataMapper.mapEntitiesToDomain(it)
-                }
+    override fun getMovie(): Flow<Resource<List<Movies>>> =
+        object : NetworkBoundResource<List<Movies>, List<DetailMovieResponse>>() {
+            override fun loadFromDB(): Flow<List<Movies>> {
+                return localDataSource.getAllMovie().map { DataMapper.mapEntitiesToDomain(it) }
             }
 
             override fun shouldFetch(data: List<Movies>?): Boolean = data.isNullOrEmpty()
 
-            override fun createCall(): LiveData<ApiResponse<MoviesResponse>> =
+            override suspend fun createCall(): Flow<ApiResponse<List<DetailMovieResponse>>> =
                 remoteDataSource.getMovie()
 
-            override fun saveCallResult(data: MoviesResponse) {
-                val moviesList = DataMapper.mapResponseToEntities(data.results)
+            override suspend fun saveCallResult(data: List<DetailMovieResponse>) {
+                val moviesList = DataMapper.mapResponseToEntities(data)
                 localDataSource.insertMovie(moviesList)
             }
-        }.asLiveData()
+        }.asFlow()
 
-    override fun getFavMovie(): LiveData<List<Movies>> {
-        return Transformations.map(localDataSource.getFavMovie()) {
-            DataMapper.mapEntitiesToDomain(it)
-        }
+    override fun getFavMovie(): Flow<List<Movies>> {
+        return localDataSource.getFavMovie().map { DataMapper.mapEntitiesToDomain(it) }
     }
 
     override fun setFavoriteMovie(movie: Movies, state: Boolean) {
