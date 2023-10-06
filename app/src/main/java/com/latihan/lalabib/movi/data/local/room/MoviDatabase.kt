@@ -5,13 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-import com.latihan.lalabib.movi.data.local.entity.RemoteKeys
 
-@Database(entities = [MoviesEntity::class, RemoteKeys::class], version = 1, exportSchema = false)
-abstract class MoviDatabase: RoomDatabase() {
+@Database(entities = [MoviesEntity::class], version = 1, exportSchema = false)
+abstract class MoviDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MoviDao
-    abstract fun remoteKeyDao(): RemoteKeysDao
 
     companion object {
         @Volatile
@@ -21,7 +19,10 @@ abstract class MoviDatabase: RoomDatabase() {
             instance ?: Room.databaseBuilder(
                 context.applicationContext,
                 MoviDatabase::class.java, "Movi.db"
-            ).build().also { instance = it }
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+                .also { instance = it }
         }
     }
 }

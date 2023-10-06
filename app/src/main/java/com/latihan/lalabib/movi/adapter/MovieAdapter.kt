@@ -2,25 +2,25 @@ package com.latihan.lalabib.movi.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 import com.latihan.lalabib.movi.databinding.ItemMovieBinding
+import com.latihan.lalabib.movi.domain.model.Movies
 import com.latihan.lalabib.movi.utils.SharedObject.IMG_URL
 
-class MoviAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
-    PagingDataAdapter<MoviesEntity, MoviAdapter.MoviViewHolder>(DIFFUTIL) {
+class MovieAdapter(private val onItemClick: (Movies) -> Unit) :
+    ListAdapter<Movies, MovieAdapter.MoviViewHolder>(DIFFUTIL) {
 
-    private object DIFFUTIL : DiffUtil.ItemCallback<MoviesEntity>() {
-        override fun areItemsTheSame(oldItem: MoviesEntity, newItem: MoviesEntity): Boolean {
+    private object DIFFUTIL : DiffUtil.ItemCallback<Movies>() {
+        override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MoviesEntity, newItem: MoviesEntity): Boolean {
+        override fun areContentsTheSame(oldItem: Movies, newItem: Movies): Boolean {
             return oldItem == newItem
         }
     }
@@ -40,16 +40,18 @@ class MoviAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
 
     class MoviViewHolder(
         private val binding: ItemMovieBinding,
-        val onItemClick: (MoviesEntity) -> Unit
+        val onItemClick: (Movies) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: MoviesEntity) {
+        fun bind(movie: Movies) {
             binding.apply {
                 tvTitle.text = movie.title
                 Glide.with(itemView.context)
-                    .load(IMG_URL + movie.poster_path)
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_loading)
-                            .error(R.drawable.ic_broken_img))
+                    .load(IMG_URL + movie.posterPath)
+                    .apply(
+                        RequestOptions.placeholderOf(R.drawable.ic_loading)
+                            .error(R.drawable.ic_broken_img)
+                    )
                     .into(ivPoster)
             }
             itemView.setOnClickListener { onItemClick(movie) }

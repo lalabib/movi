@@ -1,7 +1,6 @@
 package com.latihan.lalabib.movi.data.local.room
 
 import androidx.lifecycle.LiveData
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,16 +12,16 @@ import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 interface MoviDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movie: MoviesEntity)
+    fun insertMovie(movie: List<MoviesEntity>)
 
     @Query("Select * from movie_entities")
-    fun getAllMovie(): PagingSource<Int, MoviesEntity>
-
-    @Query("Select * from movie_entities where id = :id")
-    fun getDetailMovie(id: String): LiveData<MoviesEntity>
+    fun getAllMovie(): LiveData<List<MoviesEntity>>
 
     @Update
     fun updateMovie(movie: MoviesEntity)
+
+    @Query("Select * from movie_entities where isFavorite = 1")
+    fun getFavoriteMovie(): LiveData<List<MoviesEntity>>
 
     @Query("Delete from movie_entities")
     suspend fun deleteMovie()

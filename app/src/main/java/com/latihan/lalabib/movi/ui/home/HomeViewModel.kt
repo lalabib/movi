@@ -2,12 +2,11 @@ package com.latihan.lalabib.movi.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.latihan.lalabib.movi.data.MoviRepository
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-class HomeViewModel(repository: MoviRepository): ViewModel() {
+import com.latihan.lalabib.movi.domain.model.Movies
+import com.latihan.lalabib.movi.data.Resource
+import com.latihan.lalabib.movi.domain.usecase.MoviesUseCase
 
-    val movie: LiveData<PagingData<MoviesEntity>> = repository.getAllMovie().cachedIn(viewModelScope)
+class HomeViewModel(moviesUseCase: MoviesUseCase): ViewModel() {
+
+    val movie: LiveData<Resource<List<Movies>>> = moviesUseCase.getMovie()
 }
