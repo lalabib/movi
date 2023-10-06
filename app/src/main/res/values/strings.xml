@@ -14,4 +14,6 @@
     <string name="time_out">Timeout</string>
     <string name="retry">Retry</string>
     <string name="error_message">an error occurred while fetching data</string>
+    <string name="add_favorite">Added to Favorite</string>
+    <string name="remove_favorite">Removed from Favorite</string>
 </resources>

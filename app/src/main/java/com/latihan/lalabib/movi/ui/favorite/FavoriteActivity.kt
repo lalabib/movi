@@ -41,7 +41,7 @@ class FavoriteActivity : AppCompatActivity() {
     private fun setupData() {
         val favMovieAdapter = FavMovieAdapter { favMovie ->
             Intent(this@FavoriteActivity, DetailActivity::class.java).apply {
-                putExtra(DetailActivity.EXTRA_DATA, favMovie.id)
+                putExtra(DetailActivity.EXTRA_DATA, favMovie)
                 startActivity(this)
             }
 

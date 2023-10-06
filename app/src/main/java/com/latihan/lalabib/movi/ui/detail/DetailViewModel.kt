@@ -1,33 +1,10 @@
 package com.latihan.lalabib.movi.ui.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.latihan.lalabib.movi.data.MoviRepository
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-import com.latihan.lalabib.movi.utils.Resource
+import com.latihan.lalabib.movi.domain.model.Movies
+import com.latihan.lalabib.movi.domain.usecase.MoviesUseCase
 
-class DetailViewModel(private val repository: MoviRepository): ViewModel() {
+class DetailViewModel(private val movieUseCase: MoviesUseCase): ViewModel() {
 
-    private val movieId = MutableLiveData<String>()
-
-    fun setMoviesData(id: String) {
-        movieId.value = id
-    }
-
-    var detailMovie: LiveData<Resource<MoviesEntity>> =
-        Transformations.switchMap(movieId) { movieId ->
-            repository.getDetailMovie(movieId)
-        }
-
-    fun setFavoriteMovie() {
-        val movieSource = detailMovie.value
-        if (movieSource != null) {
-            val movie = movieSource.data
-            val newState = !movie?.isFavorite!!
-
-            repository.setFavoriteMovie(movie, newState)
-        }
-    }
+    fun setFavoriteMovies(movies: Movies, newState: Boolean) = movieUseCase.setFavoriteMovie(movies, newState)
 }

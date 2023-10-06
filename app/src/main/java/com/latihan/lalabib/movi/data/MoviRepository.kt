@@ -1,65 +1,53 @@
 package com.latihan.lalabib.movi.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.latihan.lalabib.movi.data.local.LocalDataSource
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-import com.latihan.lalabib.movi.data.remote.ApiResponse
+import com.latihan.lalabib.movi.data.remote.network.ApiResponse
 import com.latihan.lalabib.movi.data.remote.RemoteDataSource
-import com.latihan.lalabib.movi.data.remote.response.DetailMovieResponse
 import com.latihan.lalabib.movi.data.remote.response.MoviesResponse
+import com.latihan.lalabib.movi.domain.model.Movies
+import com.latihan.lalabib.movi.domain.repository.IMoviesRepository
 import com.latihan.lalabib.movi.utils.AppExecutors
-import com.latihan.lalabib.movi.utils.Resource
+import com.latihan.lalabib.movi.utils.DataMapper
 
 class MoviRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors,
-) : MoviDataSource {
+): IMoviesRepository {
 
-    override fun getMovie(): LiveData<Resource<List<MoviesEntity>>> {
-        return object : NetworkBoundResource<List<MoviesEntity>, MoviesResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<MoviesEntity>> = localDataSource.getAllMovie()
+    override fun getMovie(): LiveData<Resource<List<Movies>>> =
+        object : NetworkBoundResource<List<Movies>, MoviesResponse>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<Movies>> {
+                return Transformations.map(localDataSource.getAllMovie()) {
+                    DataMapper.mapEntitiesToDomain(it)
+                }
+            }
 
-            override fun shouldFetch(data: List<MoviesEntity>?): Boolean = data.isNullOrEmpty()
+            override fun shouldFetch(data: List<Movies>?): Boolean = data.isNullOrEmpty()
 
             override fun createCall(): LiveData<ApiResponse<MoviesResponse>> =
                 remoteDataSource.getMovie()
 
-            override fun saveCallResult(data: MoviesResponse) =
-                localDataSource.insertMovie(data.results)
-        }.asLiveData()
-    }
-
-    override fun getDetailMovie(id: String): LiveData<Resource<MoviesEntity>> {
-        return object : NetworkBoundResource<MoviesEntity, DetailMovieResponse>(appExecutors) {
-            override fun loadFromDB(): LiveData<MoviesEntity> = localDataSource.getDetailMovie(id)
-
-            override fun shouldFetch(data: MoviesEntity?): Boolean = data == null
-
-            override fun createCall(): LiveData<ApiResponse<DetailMovieResponse>> =
-                remoteDataSource.getDetailMovie(id)
-
-            override fun saveCallResult(data: DetailMovieResponse) {
-                val movie = MoviesEntity(
-                    data.id,
-                    data.title,
-                    data.overview,
-                    data.releaseDate,
-                    data.voteAverage,
-                    data.posterPath
-                )
-                localDataSource.updateMovie(movie)
+            override fun saveCallResult(data: MoviesResponse) {
+                val moviesList = DataMapper.mapResponseToEntities(data.results)
+                localDataSource.insertMovie(moviesList)
             }
         }.asLiveData()
-    }
 
-    override fun setFavoriteMovie(movie: MoviesEntity, isFavorite: Boolean) {
-        appExecutors.diskIO().execute {
-            localDataSource.setMovieStatus(movie, isFavorite)
+    override fun getFavMovie(): LiveData<List<Movies>> {
+        return Transformations.map(localDataSource.getFavMovie()) {
+            DataMapper.mapEntitiesToDomain(it)
         }
     }
 
-    override fun getFavMovie(): LiveData<List<MoviesEntity>> = localDataSource.getFavMovie()
+    override fun setFavoriteMovie(movie: Movies, state: Boolean) {
+        val moviesEntity = DataMapper.mapDomainToEntity(movie)
+        appExecutors.diskIO().execute {
+            localDataSource.setMovieStatus(moviesEntity, state)
+        }
+    }
 
     companion object {
         @Volatile

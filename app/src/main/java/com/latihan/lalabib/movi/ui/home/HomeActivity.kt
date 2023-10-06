@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.adapter.MovieAdapter
+import com.latihan.lalabib.movi.data.Resource
 import com.latihan.lalabib.movi.databinding.ActivityHomeBinding
 import com.latihan.lalabib.movi.ui.detail.DetailActivity
 import com.latihan.lalabib.movi.ui.favorite.FavoriteActivity
-import com.latihan.lalabib.movi.utils.Status
 import com.latihan.lalabib.movi.utils.ViewModelFactory
 
 class HomeActivity : AppCompatActivity() {
@@ -44,24 +44,24 @@ class HomeActivity : AppCompatActivity() {
     private fun setupData() {
         val movieAdapter = MovieAdapter { movie ->
             Intent(this@HomeActivity, DetailActivity::class.java).apply {
-                putExtra(DetailActivity.EXTRA_DATA, movie.id)
+                putExtra(DetailActivity.EXTRA_DATA, movie)
                 startActivity(this)
             }
         }
 
         homeViewModel.movie.observe(this@HomeActivity) { movie ->
             if (movie != null) {
-                when (movie.status) {
-                    Status.LOADING -> {
+                when (movie) {
+                    is Resource.Loading -> {
                         showLoading(true)
                     }
 
-                    Status.SUCCESS -> {
+                    is Resource.Success -> {
                         showLoading(false)
                         movieAdapter.submitList(movie.data)
                     }
 
-                    Status.ERROR -> {
+                    is Resource.Error -> {
                         showLoading(false)
                         Toast.makeText(
                             this@HomeActivity,

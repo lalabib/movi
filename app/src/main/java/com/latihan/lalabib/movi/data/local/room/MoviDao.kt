@@ -17,9 +17,6 @@ interface MoviDao {
     @Query("Select * from movie_entities")
     fun getAllMovie(): LiveData<List<MoviesEntity>>
 
-    @Query("Select * from movie_entities where id = :id")
-    fun getDetailMovie(id: String): LiveData<MoviesEntity>
-
     @Update
     fun updateMovie(movie: MoviesEntity)
 

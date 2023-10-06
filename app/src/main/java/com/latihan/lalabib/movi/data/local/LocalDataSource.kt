@@ -10,10 +10,6 @@ class LocalDataSource(private val moviDao: MoviDao) {
 
     fun insertMovie(movie: List<MoviesEntity>) = moviDao.insertMovie(movie)
 
-    fun getDetailMovie(id: String): LiveData<MoviesEntity> = moviDao.getDetailMovie(id)
-
-    fun updateMovie(movie: MoviesEntity) = moviDao.updateMovie(movie)
-
     fun setMovieStatus(movie: MoviesEntity, newState: Boolean) {
         movie.isFavorite = newState
         moviDao.updateMovie(movie)

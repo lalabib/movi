@@ -8,19 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 import com.latihan.lalabib.movi.databinding.ItemFavMovieBinding
+import com.latihan.lalabib.movi.domain.model.Movies
 import com.latihan.lalabib.movi.utils.SharedObject.IMG_URL
 
-class FavMovieAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
-    ListAdapter<MoviesEntity, FavMovieAdapter.FavMovieViewHolder>(DIFFUTIL) {
+class FavMovieAdapter(private val onItemClick: (Movies) -> Unit) :
+    ListAdapter<Movies, FavMovieAdapter.FavMovieViewHolder>(DIFFUTIL) {
 
-    object DIFFUTIL : DiffUtil.ItemCallback<MoviesEntity>() {
-        override fun areItemsTheSame(oldItem: MoviesEntity, newItem: MoviesEntity): Boolean {
+    object DIFFUTIL : DiffUtil.ItemCallback<Movies>() {
+        override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MoviesEntity, newItem: MoviesEntity): Boolean {
+        override fun areContentsTheSame(oldItem: Movies, newItem: Movies): Boolean {
             return oldItem == newItem
         }
     }
@@ -40,10 +40,10 @@ class FavMovieAdapter(private val onItemClick: (MoviesEntity) -> Unit) :
 
     class FavMovieViewHolder(
         private val binding: ItemFavMovieBinding,
-        val onItemClick: (MoviesEntity) -> Unit
+        val onItemClick: (Movies) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(favMovie: MoviesEntity) {
+        fun bind(favMovie: Movies) {
             binding.apply {
                 tvTitle.text = favMovie.title
                 tvOverview.text = favMovie.overview

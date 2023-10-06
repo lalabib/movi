@@ -2,16 +2,14 @@ package com.latihan.lalabib.movi.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
 import com.latihan.lalabib.movi.databinding.ActivityDetailBinding
+import com.latihan.lalabib.movi.domain.model.Movies
 import com.latihan.lalabib.movi.utils.SharedObject.IMG_URL
-import com.latihan.lalabib.movi.utils.Status
 import com.latihan.lalabib.movi.utils.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
@@ -42,43 +40,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        val extras = intent.extras
-        if (extras != null) {
-            val id = extras.getString(EXTRA_DATA)
-            if (id != null) {
-                detailViewModel.setMoviesData(id)
-                detailViewModel.detailMovie.observe(this) { detailMovie ->
-                    if (detailMovie != null) {
-                        when (detailMovie.status) {
-                            Status.LOADING -> {
-                                showLoading(true)
-                            }
-
-                            Status.SUCCESS -> {
-                                showLoading(false)
-                                detailMovie.data?.let { populatedDetailMovie(it) }
-
-                                binding.icFavorite.setOnClickListener {
-                                    detailViewModel.setFavoriteMovie()
-                                }
-                            }
-
-                            Status.ERROR -> {
-                                showLoading(false)
-                                Toast.makeText(
-                                    this@DetailActivity,
-                                    getString(R.string.error_message),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-                }
-            }
+        val detailMovie = intent.getParcelableExtra<Movies>(EXTRA_DATA)
+        if (detailMovie != null) {
+            populatedDetailMovie(detailMovie)
         }
     }
 
-    private fun populatedDetailMovie(movie: MoviesEntity) {
+    private fun populatedDetailMovie(movie: Movies) {
         binding.apply {
             tvTitle.text = movie.title
             tvVoteAverage.text = movie.voteAverage
@@ -93,16 +61,33 @@ class DetailActivity : AppCompatActivity() {
                 )
                 .into(ivPosterImage)
 
-            setFavorite(movie.isFavorite)
+            var isFavorite = movie.isFavorite
+            setFavorite(isFavorite)
+
+            icFavorite.setOnClickListener {
+                isFavorite = !isFavorite
+                detailViewModel.setFavoriteMovies(movie, isFavorite)
+                setFavorite(isFavorite)
+
+                if (isFavorite) {
+                    Toast.makeText(
+                        this@DetailActivity,
+                        getString(R.string.add_favorite),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@DetailActivity,
+                        getString(R.string.remove_favorite),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
     private fun setFavorite(state: Boolean) {
         binding.icFavorite.isChecked = state
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onSupportNavigateUp(): Boolean {

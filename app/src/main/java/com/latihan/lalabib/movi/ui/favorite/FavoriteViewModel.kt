@@ -2,10 +2,10 @@ package com.latihan.lalabib.movi.ui.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.latihan.lalabib.movi.data.MoviRepository
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
+import com.latihan.lalabib.movi.domain.model.Movies
+import com.latihan.lalabib.movi.domain.usecase.MoviesUseCase
 
-class FavoriteViewModel(repository: MoviRepository): ViewModel() {
+class FavoriteViewModel(moviesUseCase: MoviesUseCase): ViewModel() {
 
-    val favoriteMovie: LiveData<List<MoviesEntity>> = repository.getFavMovie()
+    val favoriteMovie: LiveData<List<Movies>> = moviesUseCase.getFavMovie()
 }

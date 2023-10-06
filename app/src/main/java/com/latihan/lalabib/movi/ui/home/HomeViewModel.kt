@@ -2,11 +2,11 @@ package com.latihan.lalabib.movi.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.latihan.lalabib.movi.data.MoviRepository
-import com.latihan.lalabib.movi.data.local.entity.MoviesEntity
-import com.latihan.lalabib.movi.utils.Resource
+import com.latihan.lalabib.movi.domain.model.Movies
+import com.latihan.lalabib.movi.data.Resource
+import com.latihan.lalabib.movi.domain.usecase.MoviesUseCase
 
-class HomeViewModel(repository: MoviRepository): ViewModel() {
+class HomeViewModel(moviesUseCase: MoviesUseCase): ViewModel() {
 
-    val movie: LiveData<Resource<List<MoviesEntity>>> = repository.getMovie()
+    val movie: LiveData<Resource<List<Movies>>> = moviesUseCase.getMovie()
 }
