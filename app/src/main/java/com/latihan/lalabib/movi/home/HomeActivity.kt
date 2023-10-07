@@ -9,26 +9,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.latihan.lalabib.movi.MyApplication
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.core.adapter.MovieAdapter
 import com.latihan.lalabib.movi.core.data.Resource
 import com.latihan.lalabib.movi.databinding.ActivityHomeBinding
 import com.latihan.lalabib.movi.detail.DetailActivity
 import com.latihan.lalabib.movi.favorite.FavoriteActivity
-import com.latihan.lalabib.movi.core.utils.ViewModelFactory
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-
-    @Inject
-    lateinit var factory: ViewModelFactory
-    private val homeViewModel: HomeViewModel by viewModels { factory }
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)

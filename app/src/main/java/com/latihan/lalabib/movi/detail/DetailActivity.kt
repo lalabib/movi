@@ -6,24 +6,19 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.latihan.lalabib.movi.MyApplication
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.databinding.ActivityDetailBinding
 import com.latihan.lalabib.movi.core.domain.model.Movies
 import com.latihan.lalabib.movi.core.utils.SharedObject.IMG_URL
-import com.latihan.lalabib.movi.core.utils.ViewModelFactory
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-
-    @Inject
-    lateinit var factory: ViewModelFactory
-    private val detailViewModel: DetailViewModel by viewModels { factory }
+    private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)

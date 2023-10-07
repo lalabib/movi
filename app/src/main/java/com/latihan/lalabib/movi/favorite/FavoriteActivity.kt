@@ -5,24 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.latihan.lalabib.movi.MyApplication
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.core.adapter.FavMovieAdapter
 import com.latihan.lalabib.movi.databinding.ActivityFavoriteBinding
 import com.latihan.lalabib.movi.detail.DetailActivity
-import com.latihan.lalabib.movi.core.utils.ViewModelFactory
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFavoriteBinding
-
-    @Inject
-    lateinit var factory: ViewModelFactory
-    private val favViewModel: FavoriteViewModel by viewModels { factory }
+    private val favViewModel: FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -44,7 +39,6 @@ class FavoriteActivity : AppCompatActivity() {
                 putExtra(DetailActivity.EXTRA_DATA, favMovie)
                 startActivity(this)
             }
-
         }
 
         favViewModel.favoriteMovie.observe(this@FavoriteActivity) {
