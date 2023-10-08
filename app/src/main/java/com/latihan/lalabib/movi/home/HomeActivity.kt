@@ -86,11 +86,15 @@ class HomeActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.favorite -> {
-                startActivity(Intent(this@HomeActivity, FavoriteActivity::class.java))
+                moveToFavorite()
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun moveToFavorite() {
+        startActivity(Intent(this@HomeActivity, FavoriteActivity::class.java))
     }
 }

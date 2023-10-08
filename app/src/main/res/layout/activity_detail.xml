@@ -41,7 +41,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="12dp"
-            app:cardBackgroundColor="@color/teal_200"
+            app:cardBackgroundColor="@color/blue_400"
             app:cardCornerRadius="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_poster_image">
@@ -63,10 +63,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:button="@drawable/selector_favorite"
-            app:useMaterialThemeColors="false"
             app:layout_constraintEnd_toEndOf="@id/card_view"
             app:layout_constraintTop_toBottomOf="@id/card_view"
-            app:layout_constraintTop_toTopOf="@id/tv_release_date_title" />
+            app:layout_constraintTop_toTopOf="@id/tv_release_date_title"
+            app:useMaterialThemeColors="false" />
 
         <TextView
             android:id="@+id/tv_release_date_title"

@@ -19,8 +19,8 @@
             android:id="@+id/iv_poster"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
             android:contentDescription="@string/poster"
+            android:scaleType="fitXY"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 

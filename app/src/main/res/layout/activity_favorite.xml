@@ -10,8 +10,8 @@
         android:id="@+id/rv_fav_movies"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="6dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,5 +19,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_fav_movie" />
+
+    <ImageView
+        android:id="@+id/iv_empty"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:contentDescription="@string/image"
+        android:src="@drawable/favorite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:text="@string/fav_empty"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_empty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

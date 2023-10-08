@@ -3,6 +3,7 @@ package com.latihan.lalabib.movi.favorite
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.latihan.lalabib.movi.R
@@ -41,13 +42,34 @@ class FavoriteActivity : AppCompatActivity() {
             }
         }
 
-        favViewModel.favoriteMovie.observe(this@FavoriteActivity) {
-            favMovieAdapter.submitList(it)
+        favViewModel.favoriteMovie.observe(this@FavoriteActivity) { listFavMovie ->
+            if (!listFavMovie.isNullOrEmpty()) {
+                isNotEmpty()
+                favMovieAdapter.submitList(listFavMovie)
+            } else {
+                isEmpty()
+            }
         }
 
         binding.apply {
             rvFavMovies.layoutManager = LinearLayoutManager(this@FavoriteActivity)
             rvFavMovies.adapter = favMovieAdapter
+        }
+    }
+
+    private fun isEmpty() {
+        binding.apply {
+            binding.rvFavMovies.visibility = View.GONE
+            binding.ivEmpty.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.VISIBLE
+        }
+    }
+
+    private fun isNotEmpty() {
+        binding.apply {
+            binding.rvFavMovies.visibility = View.VISIBLE
+            binding.ivEmpty.visibility = View.GONE
+            binding.tvEmpty.visibility = View.GONE
         }
     }
 
