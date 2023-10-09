@@ -1,4 +1,4 @@
-package com.latihan.lalabib.movi.adapter
+package com.latihan.lalabib.movi.favorite.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.core.domain.model.Movies
 import com.latihan.lalabib.movi.core.utils.SharedObject.IMG_URL
-import com.latihan.lalabib.movi.databinding.ItemFavMovieBinding
+import com.latihan.lalabib.movi.favorite.databinding.ItemFavMovieBinding
 
 class FavMovieAdapter(private val onItemClick: (Movies) -> Unit) :
     ListAdapter<Movies, FavMovieAdapter.FavMovieViewHolder>(DIFFUTIL) {

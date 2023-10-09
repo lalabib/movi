@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.dynamic-feature'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'com.google.devtools.ksp'
@@ -10,16 +10,15 @@ plugins {
 apply from: '../shared_dependencies.gradle'
 
 android {
-    namespace 'com.latihan.lalabib.movi'
+    namespace 'com.latihan.lalabib.movi.favorite'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.latihan.lalabib.movi"
+        applicationId "com.latihan.lalabib.movi.favorite"
         minSdk 22
         targetSdk 34
         versionCode 1
         versionName "0.1"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -29,6 +28,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -40,9 +40,9 @@ android {
         viewBinding true
         buildConfig true
     }
-    dynamicFeatures = [':favorite']
 }
 
 dependencies {
     implementation project(":core")
+    implementation project(":app")
 }

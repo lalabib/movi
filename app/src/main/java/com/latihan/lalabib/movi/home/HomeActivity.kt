@@ -1,20 +1,20 @@
 package com.latihan.lalabib.movi.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.core.adapter.MovieAdapter
 import com.latihan.lalabib.movi.core.data.Resource
 import com.latihan.lalabib.movi.databinding.ActivityHomeBinding
 import com.latihan.lalabib.movi.detail.DetailActivity
-import com.latihan.lalabib.movi.favorite.FavoriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -95,6 +95,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun moveToFavorite() {
-        startActivity(Intent(this@HomeActivity, FavoriteActivity::class.java))
+        val uri = Uri.parse("movi://favorite")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
     }
 }

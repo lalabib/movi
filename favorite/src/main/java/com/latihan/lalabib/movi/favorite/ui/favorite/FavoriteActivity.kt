@@ -1,24 +1,41 @@
-package com.latihan.lalabib.movi.favorite
+package com.latihan.lalabib.movi.favorite.ui.favorite
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.adapter.FavMovieAdapter
-import com.latihan.lalabib.movi.databinding.ActivityFavoriteBinding
+import com.latihan.lalabib.movi.favorite.databinding.ActivityFavoriteBinding
 import com.latihan.lalabib.movi.detail.DetailActivity
-import dagger.hilt.android.AndroidEntryPoint
+import com.latihan.lalabib.movi.di.FavoriteDependencies
+import com.latihan.lalabib.movi.favorite.adapter.FavMovieAdapter
+import com.latihan.lalabib.movi.favorite.di.DaggerFavoriteComponent
+import com.latihan.lalabib.movi.favorite.utils.ViewModelFactory
+import dagger.hilt.android.EntryPointAccessors
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class FavoriteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFavoriteBinding
-    private val favViewModel: FavoriteViewModel by viewModels()
+
+    @Inject
+    lateinit var factory: ViewModelFactory
+    private val favViewModel: FavoriteViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        DaggerFavoriteComponent.builder()
+            .context(this@FavoriteActivity)
+            .appDependencies(
+                EntryPointAccessors.fromApplication(
+                    applicationContext,
+                    FavoriteDependencies::class.java
+                )
+            )
+            .build()
+            .inject(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)

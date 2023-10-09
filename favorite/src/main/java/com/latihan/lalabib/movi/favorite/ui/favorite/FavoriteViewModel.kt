@@ -1,4 +1,4 @@
-package com.latihan.lalabib.movi.favorite
+package com.latihan.lalabib.movi.favorite.ui.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

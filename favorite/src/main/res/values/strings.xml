@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title">Title</string>
+    <string name="poster">Poster of Movie</string>
+    <string name="image">Image View</string>
+    <string name="overview">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipiscing elit duis. Feugiat vivamus at augue eget arcu dictum varius duis.</string>
+    <string name="fav_empty">Lets add your favorite movie!</string>
+</resources>

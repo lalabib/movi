@@ -16,9 +16,6 @@
         android:theme="@style/Theme.Movi"
         tools:targetApi="31">
         <activity
-            android:name=".favorite.FavoriteActivity"
-            android:exported="false" />
-        <activity
             android:name=".detail.DetailActivity"
             android:exported="false" />
         <activity
