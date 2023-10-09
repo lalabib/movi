@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.databinding.ItemFavMovieBinding
+import com.latihan.lalabib.movi.core.R
+import com.latihan.lalabib.movi.core.databinding.ItemMovieBinding
 import com.latihan.lalabib.movi.core.domain.model.Movies
 import com.latihan.lalabib.movi.core.utils.SharedObject.IMG_URL
 
-class FavMovieAdapter(private val onItemClick: (Movies) -> Unit) :
-    ListAdapter<Movies, FavMovieAdapter.FavMovieViewHolder>(DIFFUTIL) {
+class MovieAdapter(private val onItemClick: (Movies) -> Unit) :
+    ListAdapter<Movies, MovieAdapter.MoviViewHolder>(DIFFUTIL) {
 
-    object DIFFUTIL : DiffUtil.ItemCallback<Movies>() {
+    private object DIFFUTIL : DiffUtil.ItemCallback<Movies>() {
         override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean {
             return oldItem.id == newItem.id
         }
@@ -25,37 +25,36 @@ class FavMovieAdapter(private val onItemClick: (Movies) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavMovieViewHolder {
-        val binding =
-            ItemFavMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FavMovieViewHolder(binding, onItemClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviViewHolder {
+        val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MoviViewHolder(binding, onItemClick)
+
     }
 
-    override fun onBindViewHolder(holder: FavMovieViewHolder, position: Int) {
-        val favMovie = getItem(position)
-        if (favMovie != null) {
-            holder.bind(favMovie)
+    override fun onBindViewHolder(holder: MoviViewHolder, position: Int) {
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.bind(movie)
         }
     }
 
-    class FavMovieViewHolder(
-        private val binding: ItemFavMovieBinding,
+    class MoviViewHolder(
+        private val binding: ItemMovieBinding,
         val onItemClick: (Movies) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(favMovie: Movies) {
+        fun bind(movie: Movies) {
             binding.apply {
-                tvTitle.text = favMovie.title
-                tvOverview.text = favMovie.overview
+                tvTitle.text = movie.title
                 Glide.with(itemView.context)
-                    .load(IMG_URL + favMovie.posterPath)
+                    .load(IMG_URL + movie.posterPath)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_broken_img)
                     )
                     .into(ivPoster)
             }
-            itemView.setOnClickListener { onItemClick(favMovie) }
+            itemView.setOnClickListener { onItemClick(movie) }
         }
     }
 }

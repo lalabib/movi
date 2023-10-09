@@ -7,7 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.core.adapter.FavMovieAdapter
+import com.latihan.lalabib.movi.adapter.FavMovieAdapter
 import com.latihan.lalabib.movi.databinding.ActivityFavoriteBinding
 import com.latihan.lalabib.movi.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
