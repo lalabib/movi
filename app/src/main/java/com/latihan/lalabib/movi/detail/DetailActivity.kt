@@ -33,9 +33,11 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        val detailMovie = intent.getParcelableExtra<Movies>(EXTRA_DATA)
-        if (detailMovie != null) {
-            populatedDetailMovie(detailMovie)
+        val id = intent.getStringExtra(EXTRA_DATA)
+        if (id != null) {
+            detailViewModel.detailMovie(id).observe(this) {
+                populatedDetailMovie(it)
+            }
         }
     }
 

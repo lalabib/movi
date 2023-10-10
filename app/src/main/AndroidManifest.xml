@@ -20,6 +20,7 @@
             android:exported="false" />
         <activity
             android:name=".home.HomeActivity"
+            android:theme="@style/Theme.Movi.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

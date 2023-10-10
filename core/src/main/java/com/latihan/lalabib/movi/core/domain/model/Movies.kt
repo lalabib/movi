@@ -1,10 +1,7 @@
 package com.latihan.lalabib.movi.core.domain.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Movies (
     val id: String,
 
@@ -22,4 +19,4 @@ data class Movies (
     val posterPath: String,
 
     var isFavorite: Boolean = false
-): Parcelable
+)

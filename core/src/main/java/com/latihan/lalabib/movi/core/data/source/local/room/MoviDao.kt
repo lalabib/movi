@@ -17,8 +17,14 @@ interface MoviDao {
     @Query("Select * from movie_entities")
     fun getAllMovie(): Flow<List<MoviesEntity>>
 
+    @Query("Select * from movie_entities where title like '%' || :query || '%'")
+    fun searchMovie(query: String): Flow<List<MoviesEntity>>
+
+    @Query("Select * from movie_entities where id = :id")
+    fun getMovieById(id: String): Flow<MoviesEntity>
+
     @Update
-    fun updateMovie(movie: MoviesEntity)
+    suspend fun updateMovie(movie: MoviesEntity)
 
     @Query("Select * from movie_entities where isFavorite = 1")
     fun getFavoriteMovie(): Flow<List<MoviesEntity>>

@@ -11,13 +11,16 @@ class LocalDataSource @Inject constructor(private val moviDao: MoviDao) {
 
     fun getAllMovie(): Flow<List<MoviesEntity>> = moviDao.getAllMovie()
 
+    fun searchMovie(query: String) = moviDao.searchMovie(query)
+
+    fun getMovieById(id: String) = moviDao.getMovieById(id)
+
     suspend fun insertMovie(movie: List<MoviesEntity>) = moviDao.insertMovie(movie)
 
-    fun setMovieStatus(movie: MoviesEntity, newState: Boolean) {
+    suspend fun setMovieStatus(movie: MoviesEntity, newState: Boolean) {
         movie.isFavorite = newState
         moviDao.updateMovie(movie)
     }
 
     fun getFavMovie():  Flow<List<MoviesEntity>> = moviDao.getFavoriteMovie()
-
 }

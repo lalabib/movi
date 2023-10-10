@@ -3,9 +3,8 @@ package com.latihan.lalabib.movi.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +13,7 @@ import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.core.adapter.MovieAdapter
 import com.latihan.lalabib.movi.core.data.Resource
 import com.latihan.lalabib.movi.databinding.ActivityHomeBinding
+import com.latihan.lalabib.movi.databinding.ContentHomeBinding
 import com.latihan.lalabib.movi.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,15 +21,21 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var homeContentBinding: ContentHomeBinding
+
+    private lateinit var movieAdapter: MovieAdapter
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        homeContentBinding = binding.contentHome
 
         setupView()
         setupData()
+        search()
+        moveActivity()
     }
 
     private fun setupView() {
@@ -37,9 +43,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        val movieAdapter = MovieAdapter { movie ->
+        movieAdapter = MovieAdapter { movie ->
             Intent(this@HomeActivity, DetailActivity::class.java).apply {
-                putExtra(DetailActivity.EXTRA_DATA, movie)
+                putExtra(DetailActivity.EXTRA_DATA, movie.id)
                 startActivity(this)
             }
         }
@@ -68,14 +74,34 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        binding.apply {
+        homeContentBinding.apply {
             rvMovies.layoutManager = GridLayoutManager(this@HomeActivity, 2)
             rvMovies.adapter = movieAdapter
         }
     }
 
+    private fun search() {
+        val search = binding.searchView
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                homeViewModel.searchMovie(query).observe(this@HomeActivity) { movie ->
+                    movieAdapter.submitList(movie)
+                }
+                search.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                homeViewModel.movie.observe(this@HomeActivity) { movie ->
+                    movieAdapter.submitList(movie.data)
+                }
+                return false
+            }
+        })
+    }
+
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        homeContentBinding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun moveToFavorite() {
@@ -84,18 +110,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.home_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.favorite -> {
-                moveToFavorite()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    private fun moveActivity() {
+        binding.icProfile.setOnClickListener { moveToFavorite() }
     }
 }
