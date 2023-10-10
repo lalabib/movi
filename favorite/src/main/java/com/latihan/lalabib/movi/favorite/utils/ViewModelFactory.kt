@@ -3,7 +3,7 @@ package com.latihan.lalabib.movi.favorite.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.latihan.lalabib.movi.core.domain.usecase.MoviesUseCase
-import com.latihan.lalabib.movi.favorite.ui.favorite.FavoriteViewModel
+import com.latihan.lalabib.movi.favorite.ui.FavoriteViewModel
 import javax.inject.Inject
 
 class ViewModelFactory @Inject constructor(private val moviesUseCase: MoviesUseCase) :

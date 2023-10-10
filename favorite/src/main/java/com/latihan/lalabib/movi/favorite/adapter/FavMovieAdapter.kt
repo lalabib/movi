@@ -5,11 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.latihan.lalabib.movi.R
 import com.latihan.lalabib.movi.core.domain.model.Movies
-import com.latihan.lalabib.movi.core.utils.SharedObject.IMG_URL
+import com.latihan.lalabib.movi.core.utils.SharedObject.loadPosterImage
 import com.latihan.lalabib.movi.favorite.databinding.ItemFavMovieBinding
 
 class FavMovieAdapter(private val onItemClick: (Movies) -> Unit) :
@@ -50,13 +47,7 @@ class FavMovieAdapter(private val onItemClick: (Movies) -> Unit) :
             binding.apply {
                 tvTitle.text = favMovie.title
                 tvOverview.text = favMovie.overview
-                Glide.with(itemView.context)
-                    .load(IMG_URL + favMovie.posterPath)
-                    .apply(
-                        RequestOptions.placeholderOf(R.drawable.ic_loading)
-                            .error(R.drawable.ic_broken_img)
-                    )
-                    .into(ivPoster)
+                loadPosterImage(ivPoster, favMovie.posterPath)
             }
             itemView.setOnClickListener { onItemClick(favMovie) }
         }

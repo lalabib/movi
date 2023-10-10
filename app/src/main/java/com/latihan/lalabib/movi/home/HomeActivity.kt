@@ -78,6 +78,12 @@ class HomeActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    private fun moveToFavorite() {
+        val uri = Uri.parse("movi://favorite")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -89,14 +95,7 @@ class HomeActivity : AppCompatActivity() {
                 moveToFavorite()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun moveToFavorite() {
-        val uri = Uri.parse("movi://favorite")
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
     }
 }

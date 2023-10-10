@@ -1,15 +1,13 @@
 package com.latihan.lalabib.movi.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.appcompat.app.AppCompatActivity
 import com.latihan.lalabib.movi.R
-import com.latihan.lalabib.movi.databinding.ActivityDetailBinding
 import com.latihan.lalabib.movi.core.domain.model.Movies
-import com.latihan.lalabib.movi.core.utils.SharedObject.IMG_URL
+import com.latihan.lalabib.movi.core.utils.SharedObject.loadPosterImage
+import com.latihan.lalabib.movi.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,14 +45,7 @@ class DetailActivity : AppCompatActivity() {
             tvVoteAverage.text = movie.voteAverage
             tvReleaseDate.text = movie.releaseDate
             tvOverview.text = movie.overview
-
-            Glide.with(this@DetailActivity)
-                .load(IMG_URL + movie.posterPath)
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_broken_img)
-                )
-                .into(ivPosterImage)
+            loadPosterImage(ivPosterImage, movie.posterPath)
 
             var isFavorite = movie.isFavorite
             setFavorite(isFavorite)

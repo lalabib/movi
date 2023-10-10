@@ -5,12 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.latihan.lalabib.movi.core.R
 import com.latihan.lalabib.movi.core.databinding.ItemMovieBinding
 import com.latihan.lalabib.movi.core.domain.model.Movies
-import com.latihan.lalabib.movi.core.utils.SharedObject.IMG_URL
+import com.latihan.lalabib.movi.core.utils.SharedObject.loadPosterImage
 
 class MovieAdapter(private val onItemClick: (Movies) -> Unit) :
     ListAdapter<Movies, MovieAdapter.MoviViewHolder>(DIFFUTIL) {
@@ -46,13 +43,7 @@ class MovieAdapter(private val onItemClick: (Movies) -> Unit) :
         fun bind(movie: Movies) {
             binding.apply {
                 tvTitle.text = movie.title
-                Glide.with(itemView.context)
-                    .load(IMG_URL + movie.posterPath)
-                    .apply(
-                        RequestOptions.placeholderOf(R.drawable.ic_loading)
-                            .error(R.drawable.ic_broken_img)
-                    )
-                    .into(ivPoster)
+                loadPosterImage(ivPoster, movie.posterPath)
             }
             itemView.setOnClickListener { onItemClick(movie) }
         }

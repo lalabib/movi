@@ -2,7 +2,7 @@ package com.latihan.lalabib.movi.favorite.di
 
 import android.content.Context
 import com.latihan.lalabib.movi.di.FavoriteDependencies
-import com.latihan.lalabib.movi.favorite.ui.favorite.FavoriteActivity
+import com.latihan.lalabib.movi.favorite.ui.FavoriteActivity
 import dagger.BindsInstance
 import dagger.Component
 
