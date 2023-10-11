@@ -1,11 +1,10 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.3.0
+  android: circleci/android@0.2.1
 
 jobs:
   build:
-    executor: android/android
     docker:
       - image: cimg/openjdk:17.0-node
     steps:
@@ -15,6 +14,9 @@ jobs:
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
+      - run:
+          name: Create Local Properties
+          command: echo "sdk.dir=$ANDROID_HOME" > local.properties
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
