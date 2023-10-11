@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@0.2.1
+  android: circleci/android@2.3.0
 
 jobs:
   build:
     docker:
-      - image: cimg/openjdk:17.0-node
+      - image: cimg/android:2023.09
     steps:
       - checkout
       - restore_cache:
@@ -17,6 +17,9 @@ jobs:
       - run:
           name: Create Local Properties
           command: echo "sdk.dir=$ANDROID_HOME" > local.properties
+      - run:
+          name: Accept Android SDK Licenses
+          command: (yes || true) | sdkmanager --licenses
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
