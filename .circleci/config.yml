@@ -22,10 +22,7 @@ jobs:
           key: 'android-orb-v1-{{ epoch }}'
           paths:
             - ~/.android/build-cache
-            - ~/.android/cache
-      - run:
-          name: Accept Android SDK Licenses
-          command: sdkmanager --licenses      
+            - ~/.android/cache  
       - run:
           name: Run Build
           command: ./gradlew build
