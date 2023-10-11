@@ -1,6 +1,8 @@
 version: 2.1
+
 orbs:
-  android: circleci/android@2.3.0
+  android: circleci/android@0.2.1
+
 jobs:
   build:
     executor: android/android
@@ -12,9 +14,6 @@ jobs:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
       - run:
-          name: Create Local Properties
-          command: echo "sdk.dir=$ANDROID_HOME" > local.properties
-      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - save_cache:
@@ -25,7 +24,7 @@ jobs:
       - run:
           name: Run Build
           command: ./gradlew build
-      - store_artifacts: 
+      - store_artifacts:
           path: app/build/reports
           destination: reports
       - run:
@@ -33,6 +32,6 @@ jobs:
           command: ./gradlew lint test
       - store_test_results:
           path: app/build/test-results
-      - store_artifacts:  
+      - store_artifacts:
           path: app/build/outputs/apk/debug/
           destination: artifact-file
