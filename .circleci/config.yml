@@ -16,7 +16,10 @@ jobs:
           command: sudo chmod +x ./gradlew
       - run:
           name: Create Local Properties
-          command: echo "sdk.dir=$ANDROID_HOME" > local.properties    
+          command: echo "sdk.dir=$ANDROID_HOME" > local.properties 
+      - run:
+          name: Accept Android SDK Licenses
+          command: yes | ~/Library/Android/sdk/tools/bin/sdkmanager --licenses
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
