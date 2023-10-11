@@ -15,6 +15,9 @@ jobs:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
       - run:
+          name: Create Local Properties
+          command: echo "sdk.dir=$ANDROID_HOME" > local.properties    
+      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - save_cache:
