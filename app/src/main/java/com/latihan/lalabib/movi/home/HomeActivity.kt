@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
                     }
 
                     is Resource.Error -> {
-                        showLoading(false)
+                        showLoading(true)
                         Toast.makeText(
                             this@HomeActivity,
                             getString(R.string.error_message),
