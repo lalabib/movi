@@ -84,20 +84,24 @@ class HomeActivity : AppCompatActivity() {
         val search = binding.searchView
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                homeViewModel.searchMovie(query).observe(this@HomeActivity) { movie ->
-                    movieAdapter.submitList(movie)
-                }
+                handleSearchQuery(query)
                 search.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                homeViewModel.movie.observe(this@HomeActivity) { movie ->
-                    movieAdapter.submitList(movie.data)
+                if (newText.isEmpty()) {
+                    handleSearchQuery("")
                 }
                 return false
             }
         })
+    }
+
+    private fun handleSearchQuery(query: String) {
+        homeViewModel.searchMovie(query).observe(this@HomeActivity) { movie ->
+            movieAdapter.submitList(movie)
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

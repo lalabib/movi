@@ -61,8 +61,8 @@ class FavoriteActivity : AppCompatActivity() {
 
         favViewModel.favoriteMovie.observe(this@FavoriteActivity) { listFavMovie ->
             if (!listFavMovie.isNullOrEmpty()) {
-                isNotEmpty()
                 favMovieAdapter.submitList(listFavMovie)
+                isNotEmpty()
             } else {
                 isEmpty()
             }
