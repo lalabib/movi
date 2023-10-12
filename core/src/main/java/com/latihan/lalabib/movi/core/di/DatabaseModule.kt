@@ -2,9 +2,9 @@ package com.latihan.lalabib.movi.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.latihan.lalabib.movi.core.BuildConfig.passphrase
 import com.latihan.lalabib.movi.core.data.source.local.room.MoviDao
 import com.latihan.lalabib.movi.core.data.source.local.room.MoviDatabase
+import com.latihan.lalabib.movi.core.utils.SharedObject.passphrase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
