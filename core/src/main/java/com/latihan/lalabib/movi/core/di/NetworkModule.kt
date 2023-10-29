@@ -24,7 +24,6 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        val hostname = hostname
         val certificatePinner = CertificatePinner.Builder()
             .add(hostname, certificatePinner1)
             .add(hostname, certificatePinner2)

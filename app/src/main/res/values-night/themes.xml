@@ -18,4 +18,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="search_view">
+        <item name="android:background">@drawable/bg_search_corner_dark</item>
+    </style>
+
+    <style name="tv_color">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

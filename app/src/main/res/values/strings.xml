@@ -12,6 +12,7 @@
     <string name="release_date_title">Release Date</string>
     <string name="release_date">20–08–2021</string>
     <string name="error_message">an error occurred while fetching data</string>
+    <string name="search_not_found">Movie not found</string>
     <string name="add_favorite">Added to Favorite</string>
     <string name="remove_favorite">Removed from Favorite</string>
     <string name="search_hint">Search movie..</string>

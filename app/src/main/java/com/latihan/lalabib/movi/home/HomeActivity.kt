@@ -100,7 +100,15 @@ class HomeActivity : AppCompatActivity() {
 
     private fun handleSearchQuery(query: String) {
         homeViewModel.searchMovie(query).observe(this@HomeActivity) { movie ->
-            movieAdapter.submitList(movie)
+            if (movie.isNotEmpty()) {
+                movieAdapter.submitList(movie)
+            } else {
+                Toast.makeText(
+                    this@HomeActivity,
+                    getString(R.string.search_not_found),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
